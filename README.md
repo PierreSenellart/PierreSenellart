@@ -1,3 +1,6 @@
 Hello! I am a Professor of Computer Science at [ENS, PSL University](https://www.ens.psl.eu/). More information about myself on my [Web site][https://pierre.senellart.com/].
 
-[![Pierre Senellart's GitHub stats](https://github-readme-stats.vercel.app/api?username=PierreSenellart)](https://github.com/anuraghazra/github-readme-stats)
+<div align="center">
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=PierreSenellart&show_icons=true&theme=dracula&include_all_commits=true&count_private=true"/>
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=PierreSenellart&layout=compact&langs_count=7&theme=dracula"/>
+</div>
