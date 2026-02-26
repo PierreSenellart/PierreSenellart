@@ -37,7 +37,7 @@ jobs:
         with:
           card: pin
           options: repo=provsql
-          path: profile/pin-readme-tools-github-provsql.svg
+          path: profile/pin-provsql.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate pin card
@@ -45,7 +45,7 @@ jobs:
         with:
           card: pin
           options: repo=apxproof
-          path: profile/pin-readme-tools-github-apxproof.svg
+          path: profile/pin-apxproof.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit cards
