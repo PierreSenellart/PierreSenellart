@@ -161,7 +161,7 @@
     <g class="stagger" style="animation-delay: 1200ms">
       <circle cx="5" cy="6" r="5" fill="#336790" />
       <text data-testid="lang-name" x="15" y="10" class='lang-name'>
-        PLpgSQL 6.09%
+        PLpgSQL 6.10%
       </text>
     </g>
   </g>
@@ -227,8 +227,8 @@
        <g class="stagger" style="animation-delay: 1100ms">
         <path
           data-testid="lang-donut"
-          size="6.09"
-          d="M 116.66666666666666 60 A 56.66666666666667 56.66666666666667 0 0 0 95.5086706109355 64.09813697430438"
+          size="6.1"
+          d="M 116.70227138106466 60.00001118555129 A 56.66666666666667 56.66666666666667 0 0 0 95.5086706109355 64.09813697430438"
           stroke="#336790"
           fill="none"
           stroke-width="12">
