@@ -9,7 +9,7 @@
         aria-labelledby="descId"
       >
         <title id="titleId">Pierre Senellart's GitHub Stats, Rank: B+</title>
-        <desc id="descId">Total Stars Earned: 171, Total Commits  : 3368, Total PRs: 7, Total Issues: 14, Contributed to (last year): 5</desc>
+        <desc id="descId">Total Stars Earned: 171, Total Commits  : 3384, Total PRs: 7, Total Issues: 14, Contributed to (last year): 5</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -73,7 +73,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 120.84285384965024;
+        stroke-dashoffset: 120.79810735560876;
       }
     }
   
