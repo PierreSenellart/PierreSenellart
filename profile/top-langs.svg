@@ -152,7 +152,7 @@
     </g>
   </g><g transform="translate(0, 128)">
     <g class="stagger" style="animation-delay: 1050ms">
-      <circle cx="5" cy="6" r="5" fill="#858585" />
+      <circle cx="5" cy="6" r="5" fill="#E67E22" />
       <text data-testid="lang-name" x="15" y="10" class='lang-name'>
         Lean 10.09%
       </text>
@@ -218,7 +218,7 @@
           data-testid="lang-donut"
           size="10.09"
           d="M 98.71608542436536 62.91829232683522 A 56.66666666666667 56.66666666666667 0 0 0 70.3663503699938 83.99570368821806"
-          stroke="#4C21FF"
+          stroke="#E67E22"
           fill="none"
           stroke-width="12">
         </path>
