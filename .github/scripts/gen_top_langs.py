@@ -35,7 +35,10 @@ from __future__ import annotations
 import json
 import math
 import os
+import shutil
+import subprocess
 import sys
+import tempfile
 import urllib.request
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -99,6 +102,7 @@ CARD_BG = "#fffefe"
 CARD_BORDER = "#e4e2e2"
 TITLE_COLOR = "#2f80ed"
 TEXT_COLOR = "#434d58"
+LOC_COLOR = "#8b949e"       # muted grey for the secondary "loc" column.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # DATA -- fetch and aggregate.
@@ -153,6 +157,58 @@ def aggregate(repos: list[dict]) -> dict[str, int]:
     return totals
 
 
+# Ruby helper that emits Linguist's per-language file list (honours each repo's
+# .gitattributes, exactly like the /languages endpoint) so counted lines match
+# the byte-based percentages.
+LINGUIST_HELPER = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               "linguist_breakdown.rb")
+
+
+def count_lines(repos: list[dict]) -> dict[str, int]:
+    """LOC per language, by cloning each repo and running github-linguist.
+
+    Best-effort: returns {} (card renders without the LOC column) if line
+    counting is disabled or the tooling is unavailable, and silently skips any
+    individual repo that fails to clone or parse. Never fatal -- the byte-based
+    percentages are the card's source of truth; LOC is a secondary column.
+    """
+    if os.environ.get("TOPLANGS_NO_LINES"):
+        return {}
+    if shutil.which("ruby") is None or not os.path.exists(LINGUIST_HELPER):
+        print("LOC: ruby/linguist helper unavailable; skipping line counts",
+              file=sys.stderr)
+        return {}
+
+    lines: dict[str, int] = {}
+    for r in repos:
+        name = r["name"]
+        url = r.get("clone_url") or f"https://github.com/{USERNAME}/{name}.git"
+        tmp = tempfile.mkdtemp(prefix="toplangs_")
+        try:
+            subprocess.run(["git", "clone", "--depth", "1", "--quiet", url, tmp],
+                           check=True, capture_output=True)
+            out = subprocess.run(["ruby", LINGUIST_HELPER, tmp],
+                                 check=True, capture_output=True, text=True)
+            breakdown = json.loads(out.stdout or "{}")
+            for lang, files in breakdown.items():
+                if lang in HIDE_LANGUAGES:
+                    continue
+                n = 0
+                for rel in files:
+                    try:
+                        with open(os.path.join(tmp, rel), "rb") as fh:
+                            n += fh.read().count(b"\n")
+                    except OSError:
+                        pass
+                if n:
+                    lines[lang] = lines.get(lang, 0) + n
+        except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
+            print(f"  LOC: skipped {name} ({type(e).__name__})", file=sys.stderr)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+    return lines
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # RENDER -- build the donut SVG.
 # ─────────────────────────────────────────────────────────────────────────────
@@ -164,7 +220,9 @@ def color_for(lang: str, seen: list[str]) -> str:
     return FALLBACK_COLORS[seen.index(lang) % len(FALLBACK_COLORS)]
 
 
-def build_svg(totals: dict[str, int]) -> str:
+def build_svg(totals: dict[str, int], lines: dict[str, int] | None = None) -> str:
+    lines = lines or {}
+    has_loc = bool(lines)
     grand = sum(totals.values())
     ordered = sorted(totals.items(), key=lambda kv: -kv[1])
     shown = ordered[:MAX_LANGS]
@@ -172,14 +230,27 @@ def build_svg(totals: dict[str, int]) -> str:
     if SHOW_OTHER and rest:
         shown.append(("Other", sum(v for _, v in rest)))
 
-    langs = [k for k, _ in shown]
-    segments = [(k, v, 100 * v / grand) for k, v in shown]
+    def loc_for(lang: str) -> int:
+        if lang == "Other":
+            return sum(lines.get(k, 0) for k, _ in rest)
+        return lines.get(lang, 0)
 
-    # Layout.
+    langs = [k for k, _ in shown]
+    segments = [(k, v, 100 * v / grand, loc_for(k)) for k, v in shown]
+
+    # Layout. With a LOC column the card is wider and the numeric columns and
+    # donut shift right; without it, the original compact layout is kept.
     pad = 25
-    W = 340
     title_y = 35
-    donut_cx, donut_cy, R, SW = W - 80, 128, 45, 17
+    if has_loc:
+        W = 470
+        donut_cx = W - 70
+        pct_right, loc_right = 185, 320
+    else:
+        W = 340
+        donut_cx = W - 80
+        pct_right = pad + 125
+    donut_cy, R, SW = 128, 45, 17
     row_h = 22
     legend_x, legend_top = pad, 62
     legend_bottom = legend_top + row_h * len(segments)
@@ -201,7 +272,7 @@ def build_svg(totals: dict[str, int]) -> str:
     circ = 2 * math.pi * R
     offset = 0.0
     parts.append(f'<g transform="rotate(-90 {donut_cx} {donut_cy})">')
-    for lang, _, pct in segments:
+    for lang, _, pct, _loc in segments:
         seg = circ * pct / 100
         parts.append(
             f'<circle cx="{donut_cx}" cy="{donut_cy}" r="{R}" '
@@ -214,9 +285,8 @@ def build_svg(totals: dict[str, int]) -> str:
     # Legend: language name left-aligned; percentage right-aligned so the
     # percent signs line up in a neat column set a little apart from the names.
     name_x = legend_x + 18
-    pct_right = legend_x + 125
     font = 'font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12"'
-    for i, (lang, _, pct) in enumerate(segments):
+    for i, (lang, _, pct, loc) in enumerate(segments):
         y = legend_top + i * row_h
         parts.append(
             f'<rect x="{legend_x}" y="{y}" width="11" height="11" rx="2.5" '
@@ -227,6 +297,11 @@ def build_svg(totals: dict[str, int]) -> str:
         parts.append(
             f'<text x="{pct_right}" y="{y + 10}" text-anchor="end" {font} '
             f'fill="{TEXT_COLOR}">{pct:.2f}%</text>')
+        if has_loc:
+            parts.append(
+                f'<text x="{loc_right}" y="{y + 10}" text-anchor="end" {font} '
+                f'fill="{LOC_COLOR}">{loc:,}'
+                f'<tspan font-size="10" dx="2">loc</tspan></text>')
 
     parts.append('</svg>')
     return "\n".join(parts)
@@ -236,15 +311,17 @@ def main() -> None:
     out = sys.argv[1] if len(sys.argv) > 1 else "profile/top-langs.svg"
     repos = list_repos()
     totals = aggregate(repos)
-    svg = build_svg(totals)
+    lines = count_lines(repos)
+    svg = build_svg(totals, lines)
     with open(out, "w") as f:
         f.write(svg + "\n")
     # Diagnostics to stderr so the SVG on stdout path stays clean.
     grand = sum(totals.values())
     print(f"{len(repos)} repos counted; {len(totals)} languages; "
-          f"{grand} bytes total", file=sys.stderr)
+          f"{grand} bytes total; {sum(lines.values())} loc total", file=sys.stderr)
     for lang, size in sorted(totals.items(), key=lambda kv: -kv[1]):
-        print(f"  {lang:<16}{100*size/grand:6.2f}%  ({size} B)", file=sys.stderr)
+        print(f"  {lang:<16}{100*size/grand:6.2f}%  ({size} B, "
+              f"{lines.get(lang, 0)} loc)", file=sys.stderr)
     print(f"wrote {out}", file=sys.stderr)
 
 

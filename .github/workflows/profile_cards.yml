@@ -24,10 +24,20 @@ jobs:
           path: profile/stats.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # github-linguist is used by gen_top_langs.py to count lines of code per
+      # language while honouring each repo's .gitattributes (charlock_holmes, a
+      # dependency, needs cmake + libicu-dev to build). Line counting is
+      # best-effort: if this step is removed the card simply drops the LOC column.
+      - name: Install github-linguist
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake pkg-config libicu-dev
+          sudo gem install github-linguist
+
       # Self-computed "Most Used Languages" donut (see .github/scripts/gen_top_langs.py):
-      # honest percentages, an "Other" slice, and colours we control. Repos annotate
-      # generated/vendored/test content via their own .gitattributes, which GitHub's
-      # /languages API (used here) already honours.
+      # honest percentages, an "Other" slice, per-language LOC, and colours we control.
+      # Repos annotate generated/vendored/test content via their own .gitattributes,
+      # which both the /languages API (bytes/percentages) and github-linguist (LOC) honour.
       - name: Generate top languages card
         run: python3 .github/scripts/gen_top_langs.py profile/top-langs.svg
         env:
