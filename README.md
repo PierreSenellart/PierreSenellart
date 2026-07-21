@@ -2,5 +2,3 @@ Hello! I am a Professor of Computer Science at [ENS, PSL University](https://www
 
 ![Stats](./profile/stats.svg)
 ![Top Languages](./profile/top-langs.svg)
-![ProvSQL](./profile/pin-provsql.svg)
-![apxproof](./profile/pin-apxproof.svg)
