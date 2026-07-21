@@ -32,11 +32,14 @@ jobs:
           path: profile/top-langs.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # The donut layout emits stroke="null" for languages GitHub Linguist has no
-      # colour for (e.g. Lean), leaving an invisible slice. Paint those a Lean-ish
-      # colour so they show up on the circle.
-      - name: Colour uncoloured donut slices (e.g. Lean)
-        run: sed -i 's/stroke="null"/stroke="#4C21FF"/g' profile/top-langs.svg
+      # Languages GitHub Linguist has no colour for (e.g. Lean) come out invisible:
+      # the donut slice gets stroke="null" and the legend dot the grey fallback
+      # (#858585). Repaint both with a distinct orange so Lean shows on the circle
+      # and its legend swatch matches (orange avoids clashing with the two blues).
+      - name: Colour uncoloured languages (e.g. Lean)
+        run: |
+          sed -i -e 's/stroke="null"/stroke="#E67E22"/g' \
+                 -e 's/fill="#858585"/fill="#E67E22"/g' profile/top-langs.svg
 
       - name: Generate pin card
         uses: readme-tools/github-readme-stats-action@v1
