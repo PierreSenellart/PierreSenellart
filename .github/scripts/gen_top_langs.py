@@ -243,9 +243,11 @@ def build_svg(totals: dict[str, int], lines: dict[str, int] | None = None) -> st
     pad = 25
     title_y = 35
     if has_loc:
-        W = 470
-        donut_cx = W - 70
-        pct_right, loc_right = 185, 320
+        W = 440
+        donut_cx = W - 84
+        # loc column right-anchored just ~1.25em past the percentages; the wider
+        # gap then falls between the loc column and the donut.
+        pct_right, loc_right = 185, 260
     else:
         W = 340
         donut_cx = W - 80
