@@ -16,13 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # Self-computed stats card (see .github/scripts/gen_stats.py). It replaced
+      # the github-readme-stats card on 2026-07-27: GitHub's GraphQL API stopped
+      # serving `stargazers` to tokens without an explicit grant on the target
+      # repo, which broke every card that project renders. The REST endpoints
+      # this script uses still work with the default GITHUB_TOKEN.
       - name: Generate stats card
-        uses: readme-tools/github-readme-stats-action@v1
-        with:
-          card: stats
-          options: username=${{ github.repository_owner }}&show_icons=true&include_all_commits=true
-          path: profile/stats.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/scripts/gen_stats.py profile/stats.svg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # github-linguist is used by gen_top_langs.py to count lines of code per
       # language while honouring each repo's .gitattributes (charlock_holmes, a
@@ -42,22 +44,6 @@ jobs:
         run: python3 .github/scripts/gen_top_langs.py profile/top-langs.svg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate pin card
-        uses: readme-tools/github-readme-stats-action@v1
-        with:
-          card: pin
-          options: repo=provsql
-          path: profile/pin-provsql.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate pin card
-        uses: readme-tools/github-readme-stats-action@v1
-        with:
-          card: pin
-          options: repo=apxproof
-          path: profile/pin-apxproof.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit cards
         run: |
