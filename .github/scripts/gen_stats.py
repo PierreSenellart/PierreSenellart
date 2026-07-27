@@ -19,14 +19,27 @@ Two deliberate differences from the card this replaces:
      breakage above went unnoticed for five days. Here an API failure raises,
      the step goes red, and the previous good SVG is left untouched.
 
-Metric sources (all REST, all verified against the last card GRS produced):
-    Total Stars Earned          sum of stargazers_count over non-fork owned repos
+The rows deliberately measure the *maintainer* side. The card GRS rendered showed
+"Total PRs: 7" and "Total Issues: 14", which count what this account opened in
+other people's repositories -- a number that would look the same whether provsql
+had 70 stars or none. What people did with these repositories (24 merged PRs, 92
+issues filed, 62 forks, 15 outside contributors) is the story worth telling.
+
+Metric sources (all REST):
+    Total Stars Earned          sum of stargazers_count over the counted repos
+    Forks of my repos           sum of forks_count over the counted repos
+    PRs merged from others      search/issues, is:pr is:merged, minus this
+                                account and minus bots (32 of the 56 non-self
+                                merges were dependabot, so this filter matters)
+    Issues filed in my repos    search/issues, is:issue, minus this account/bots
+    Contributors                distinct non-bot logins over the counted repos,
+                                excluding this account
     Total Commits               search/commits?q=author:USERNAME
-    Total PRs                   search/issues?q=author:USERNAME+is:pr
-    Total Issues                search/issues?q=author:USERNAME+is:issue
-    Contributed to (last year)  owned repos with a commit in the window (asked
-                                repo by repo, so exact) plus repos owned by
-                                others found in search/commits over the window
+
+Caveat on scope: the `user:` search qualifier spans every repo this account owns,
+including forks, whereas the star/fork tallies use the non-fork list. Today the
+two forks (hotcrp, notmuch-addrlookup-c) hold no issues or PRs at all, so the
+counts coincide; a fork that acquires them would drift.
 
 Usage:
     python3 gen_stats.py [output.svg]         # default: profile/stats.svg
@@ -36,7 +49,6 @@ used here require authentication, so unlike gen_top_langs.py this is mandatory.
 
 from __future__ import annotations
 
-import datetime
 import html
 import json
 import os
@@ -51,17 +63,15 @@ import urllib.request
 
 USERNAME = "PierreSenellart"
 
-# Repository selection for the star tally (matches github-readme-stats
+# Repository selection for the star and fork tallies (matches github-readme-stats
 # defaults, and gen_top_langs.py).
 INCLUDE_FORKS = False        # forks are noise: someone else's stars.
 INCLUDE_ARCHIVED = True
 
-# "Contributed to" looks at commits authored in the trailing window. The search
-# API only ever returns its first 1000 matches, so with more commits than that
-# in the window we count distinct repositories over the most recent 1000 and say
-# so on stderr. A repo touched only by an older commit could then be missed.
-CONTRIB_WINDOW_DAYS = 365
-CONTRIB_MAX_PAGES = 10       # 10 x 100 = the API's hard 1000-result ceiling.
+# Bots to keep out of the "from others" counts. Dependabot alone accounts for
+# more merged PRs than every human contributor combined, so counting it would
+# turn a collaboration figure into a dependency-bump figure.
+EXCLUDE_BOT_AUTHORS = ["app/dependabot"]
 
 # Card appearance. Shared with gen_top_langs.py so the two cards read as a set.
 # The title takes the account's display name ("Pierre Senellart"), falling back
@@ -83,21 +93,27 @@ ICONS = {
     "commit": "M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 "
               "0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 "
               "1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z",
-    "pr": "M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 "
-          "0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 "
-          "1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 "
-          "0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 "
-          "3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 "
-          "0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75"
-          ".75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z",
     "issue": "M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM8 0a8 8 0 1 1 0 "
              "16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z",
-    "repo": "M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 "
-            "0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 "
-            "1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 "
-            "1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 "
-            "1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45"
-            "-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z",
+    "fork": "M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a"
+            "2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a"
+            "2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a"
+            "2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 "
+            "1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75"
+            ".75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z",
+    "merge": "M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 "
+             "1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 "
+             "0V5.372a2.25 2.25 0 1 1 1.95-.218ZM4.25 13.5a.75.75 0 1 0 0-1.5"
+             ".75.75 0 0 0 0 1.5Zm8.5-4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 "
+             "1.5ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z",
+    "people": "M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 "
+              "4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 "
+              "1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 "
+              "5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 "
+              "3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 "
+              "3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 "
+              "1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 "
+              "0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z",
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -150,56 +166,41 @@ def list_repos() -> list[dict]:
     return [r for r in repos if keep(r)]
 
 
-def contributed_to(repos: list[dict]) -> tuple[int, bool]:
-    """(distinct repos committed to in the window, whether the cap was hit).
+def from_others(*qualifiers: str) -> int:
+    """Matches in this account's repos, excluding its own and the bots'."""
+    exclusions = " ".join(f"-author:{a}"
+                          for a in [USERNAME, *EXCLUDE_BOT_AUTHORS])
+    return search_count(f"user:{USERNAME} {' '.join(qualifiers)} {exclusions}")
 
-    Owned repos are asked directly, one listing each, so that half of the count
-    is exact. Repos owned by *other* people can only come from the commit search,
-    which stops at 1000 matches -- hence the flag: with more commits than that in
-    the window, an external repo touched by an older commit can be missed.
+
+def contributors(repos: list[dict]) -> int:
+    """Distinct humans who committed to the counted repos, minus this account.
+
+    The endpoint pages at 100 per repo, which no repo here approaches; bots
+    arrive with type "Bot" and are dropped, so dependabot cannot inflate this.
     """
-    since = (datetime.date.today()
-             - datetime.timedelta(days=CONTRIB_WINDOW_DAYS)).isoformat()
-
-    seen = {f"{USERNAME}/{r['name']}" for r in repos
-            if api(f"https://api.github.com/repos/{USERNAME}/{r['name']}"
-                   f"/commits?author={USERNAME}&since={since}T00:00:00Z"
-                   f"&per_page=1")}
-
-    query = urllib.parse.quote(f"author:{USERNAME} author-date:>{since}",
-                               safe=":+>")
-    capped = False
-    for page in range(1, CONTRIB_MAX_PAGES + 1):
-        res = api(f"https://api.github.com/search/commits?q={query}"
-                  f"&per_page=100&page={page}")
-        items = res.get("items", [])
-        seen.update(i["repository"]["full_name"] for i in items
-                    if not i["repository"]["full_name"].startswith(
-                        f"{USERNAME}/"))
-        if len(items) < 100:
-            break
-        if page == CONTRIB_MAX_PAGES:
-            capped = res["total_count"] > CONTRIB_MAX_PAGES * 100
-    return len(seen), capped
+    people: set[str] = set()
+    for r in repos:
+        for c in api(f"https://api.github.com/repos/{USERNAME}/{r['name']}"
+                     f"/contributors?per_page=100"):
+            if c.get("type") == "User":
+                people.add(c["login"])
+    return len(people - {USERNAME})
 
 
 def collect() -> list[tuple[str, str, int]]:
     """The card's rows, as (icon key, label, value)."""
     repos = list_repos()
-    print(f"{len(repos)} repos counted for stars", file=sys.stderr)
-    contrib, capped = contributed_to(repos)
-    if capped:
-        print(f"  contributed-to: repos owned by others were looked for in the "
-              f"most recent {CONTRIB_MAX_PAGES * 100} commits only (search API "
-              f"ceiling); owned repos are exact", file=sys.stderr)
+    print(f"{len(repos)} repos counted for stars and forks", file=sys.stderr)
     return [
         ("star", "Total Stars Earned",
          sum(r["stargazers_count"] for r in repos)),
+        ("fork", "Forks of my repos", sum(r["forks_count"] for r in repos)),
+        ("merge", "PRs merged from others", from_others("is:pr", "is:merged")),
+        ("issue", "Issues filed in my repos", from_others("is:issue")),
+        ("people", "Contributors", contributors(repos)),
         ("commit", "Total Commits", search_count(f"author:{USERNAME}",
                                                  endpoint="commits")),
-        ("pr", "Total PRs", search_count(f"author:{USERNAME} is:pr")),
-        ("issue", "Total Issues", search_count(f"author:{USERNAME} is:issue")),
-        ("repo", "Contributed to (last year)", contrib),
     ]
 
 
