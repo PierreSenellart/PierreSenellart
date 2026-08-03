@@ -12,11 +12,11 @@
 <text x="415" y="124" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" font-weight="600" fill="#434d58">24</text>
 <g transform="translate(25 137) scale(0.9)" fill="#4c71f2"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></g>
 <text x="51" y="149" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" fill="#434d58">Issues filed in my repos:</text>
-<text x="415" y="149" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" font-weight="600" fill="#434d58">93</text>
+<text x="415" y="149" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" font-weight="600" fill="#434d58">94</text>
 <g transform="translate(25 162) scale(0.9)" fill="#4c71f2"><path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z"/></g>
 <text x="51" y="174" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" fill="#434d58">Contributors:</text>
 <text x="415" y="174" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" font-weight="600" fill="#434d58">15</text>
 <g transform="translate(25 187) scale(0.9)" fill="#4c71f2"><path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/></g>
 <text x="51" y="199" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" fill="#434d58">Total Commits:</text>
-<text x="415" y="199" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" font-weight="600" fill="#434d58">4,037</text>
+<text x="415" y="199" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="14" font-weight="600" fill="#434d58">4,043</text>
 </svg>
