@@ -35,7 +35,7 @@
 <rect x="25" y="172" width="11" height="11" rx="2.5" fill="#336790"/>
 <text x="43" y="182" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">PLpgSQL</text>
 <text x="185" y="182" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">2.20%</text>
-<text x="260" y="182" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">12,059<tspan font-size="10" dx="2">loc</tspan></text>
+<text x="260" y="182" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">12,796<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="194" width="11" height="11" rx="2.5" fill="#3D6117"/>
 <text x="43" y="204" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">TeX</text>
 <text x="185" y="204" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">2.06%</text>
