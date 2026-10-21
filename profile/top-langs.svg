@@ -2,36 +2,36 @@
 <rect x="0.5" y="0.5" rx="4.5" width="439" height="284" fill="#fffefe" stroke="#e4e2e2"/>
 <text x="25" y="35" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="18" font-weight="600" fill="#2f80ed">Most Used Languages</text>
 <g transform="rotate(-90 356 128)">
-<circle cx="356" cy="128" r="45" stroke="#E67E22" stroke-width="17" fill="none" stroke-dasharray="240.316 42.427" stroke-dashoffset="-0.000"/>
-<circle cx="356" cy="128" r="45" stroke="#f34b7d" stroke-width="17" fill="none" stroke-dasharray="13.100 269.643" stroke-dashoffset="-240.316"/>
-<circle cx="356" cy="128" r="45" stroke="#555555" stroke-width="17" fill="none" stroke-dasharray="10.528 272.216" stroke-dashoffset="-253.416"/>
-<circle cx="356" cy="128" r="45" stroke="#3D6117" stroke-width="17" fill="none" stroke-dasharray="6.366 276.377" stroke-dashoffset="-263.944"/>
-<circle cx="356" cy="128" r="45" stroke="#3572A5" stroke-width="17" fill="none" stroke-dasharray="4.820 277.923" stroke-dashoffset="-270.310"/>
-<circle cx="356" cy="128" r="45" stroke="#f1e05a" stroke-width="17" fill="none" stroke-dasharray="3.135 279.609" stroke-dashoffset="-275.130"/>
-<circle cx="356" cy="128" r="45" stroke="#336790" stroke-width="17" fill="none" stroke-dasharray="2.866 279.878" stroke-dashoffset="-278.265"/>
-<circle cx="356" cy="128" r="45" stroke="#89e051" stroke-width="17" fill="none" stroke-dasharray="0.579 282.164" stroke-dashoffset="-281.131"/>
-<circle cx="356" cy="128" r="45" stroke="#bbbbbb" stroke-width="17" fill="none" stroke-dasharray="1.033 281.710" stroke-dashoffset="-281.710"/>
+<circle cx="356" cy="128" r="45" stroke="#E67E22" stroke-width="17" fill="none" stroke-dasharray="239.925 42.818" stroke-dashoffset="-0.000"/>
+<circle cx="356" cy="128" r="45" stroke="#f34b7d" stroke-width="17" fill="none" stroke-dasharray="13.089 269.654" stroke-dashoffset="-239.925"/>
+<circle cx="356" cy="128" r="45" stroke="#555555" stroke-width="17" fill="none" stroke-dasharray="10.513 272.230" stroke-dashoffset="-253.014"/>
+<circle cx="356" cy="128" r="45" stroke="#3D6117" stroke-width="17" fill="none" stroke-dasharray="6.369 276.374" stroke-dashoffset="-263.527"/>
+<circle cx="356" cy="128" r="45" stroke="#3572A5" stroke-width="17" fill="none" stroke-dasharray="5.240 277.503" stroke-dashoffset="-269.896"/>
+<circle cx="356" cy="128" r="45" stroke="#f1e05a" stroke-width="17" fill="none" stroke-dasharray="3.130 279.614" stroke-dashoffset="-275.137"/>
+<circle cx="356" cy="128" r="45" stroke="#336790" stroke-width="17" fill="none" stroke-dasharray="2.861 279.882" stroke-dashoffset="-278.266"/>
+<circle cx="356" cy="128" r="45" stroke="#89e051" stroke-width="17" fill="none" stroke-dasharray="0.585 282.159" stroke-dashoffset="-281.127"/>
+<circle cx="356" cy="128" r="45" stroke="#bbbbbb" stroke-width="17" fill="none" stroke-dasharray="1.031 281.712" stroke-dashoffset="-281.712"/>
 </g>
 <rect x="25" y="62" width="11" height="11" rx="2.5" fill="#E67E22"/>
 <text x="43" y="72" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">Lean</text>
-<text x="185" y="72" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">84.99%</text>
-<text x="260" y="72" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">1,159,446<tspan font-size="10" dx="2">loc</tspan></text>
+<text x="185" y="72" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">84.86%</text>
+<text x="260" y="72" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">1,159,525<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="84" width="11" height="11" rx="2.5" fill="#f34b7d"/>
 <text x="43" y="94" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">C++</text>
 <text x="185" y="94" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">4.63%</text>
-<text x="260" y="94" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">72,088<tspan font-size="10" dx="2">loc</tspan></text>
+<text x="260" y="94" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">72,159<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="106" width="11" height="11" rx="2.5" fill="#555555"/>
 <text x="43" y="116" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">C</text>
 <text x="185" y="116" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">3.72%</text>
-<text x="260" y="116" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">55,279<tspan font-size="10" dx="2">loc</tspan></text>
+<text x="260" y="116" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">55,299<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="128" width="11" height="11" rx="2.5" fill="#3D6117"/>
 <text x="43" y="138" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">TeX</text>
 <text x="185" y="138" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">2.25%</text>
-<text x="260" y="138" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">32,630<tspan font-size="10" dx="2">loc</tspan></text>
+<text x="260" y="138" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">32,694<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="150" width="11" height="11" rx="2.5" fill="#3572A5"/>
 <text x="43" y="160" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">Python</text>
-<text x="185" y="160" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">1.70%</text>
-<text x="260" y="160" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">25,668<tspan font-size="10" dx="2">loc</tspan></text>
+<text x="185" y="160" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">1.85%</text>
+<text x="260" y="160" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">27,666<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="172" width="11" height="11" rx="2.5" fill="#f1e05a"/>
 <text x="43" y="182" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">JavaScript</text>
 <text x="185" y="182" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">1.11%</text>
@@ -42,10 +42,10 @@
 <text x="260" y="204" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">14,463<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="216" width="11" height="11" rx="2.5" fill="#89e051"/>
 <text x="43" y="226" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">Shell</text>
-<text x="185" y="226" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">0.20%</text>
-<text x="260" y="226" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">2,518<tspan font-size="10" dx="2">loc</tspan></text>
+<text x="185" y="226" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">0.21%</text>
+<text x="260" y="226" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">2,539<tspan font-size="10" dx="2">loc</tspan></text>
 <rect x="25" y="238" width="11" height="11" rx="2.5" fill="#bbbbbb"/>
 <text x="43" y="248" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">Other</text>
-<text x="185" y="248" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">0.37%</text>
+<text x="185" y="248" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#434d58">0.36%</text>
 <text x="260" y="248" text-anchor="end" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="12" fill="#8b949e">6,665<tspan font-size="10" dx="2">loc</tspan></text>
 </svg>
