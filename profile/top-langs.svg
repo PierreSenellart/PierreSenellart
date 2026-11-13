@@ -2,7 +2,7 @@
 <rect x="0.5" y="0.5" rx="4.5" width="439" height="284" fill="#fffefe" stroke="#e4e2e2"/>
 <text x="25" y="35" font-family="Segoe UI, Ubuntu, Sans-Serif" font-size="18" font-weight="600" fill="#2f80ed">Most Used Languages</text>
 <g transform="rotate(-90 356 128)">
-<circle cx="356" cy="128" r="45" stroke="#E67E22" stroke-width="17" fill="none" stroke-dasharray="244.090 38.653" stroke-dashoffset="-0.000"/>
+<circle cx="356" cy="128" r="45" stroke="#E67E22" stroke-width="17" fill="none" stroke-dasharray="244.090 38.654" stroke-dashoffset="-0.000"/>
 <circle cx="356" cy="128" r="45" stroke="#f34b7d" stroke-width="17" fill="none" stroke-dasharray="11.907 270.837" stroke-dashoffset="-244.090"/>
 <circle cx="356" cy="128" r="45" stroke="#555555" stroke-width="17" fill="none" stroke-dasharray="9.451 273.292" stroke-dashoffset="-255.997"/>
 <circle cx="356" cy="128" r="45" stroke="#3D6117" stroke-width="17" fill="none" stroke-dasharray="5.748 276.996" stroke-dashoffset="-265.448"/>
